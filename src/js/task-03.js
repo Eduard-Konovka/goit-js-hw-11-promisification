@@ -19,7 +19,7 @@ gallery.style.display = 'flex'
 gallery.style.padding = '0px'
 
 gallery.insertAdjacentHTML(
-  'afterbegin',
+  'beforeend',
   images
     .map(
       image =>
