@@ -1,31 +1,43 @@
-const images = [
-  {
-    url: 'https://images.pexels.com/photos/140134/pexels-photo-140134.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-    alt: 'White and Black Long Fur Cat',
-  },
-  {
-    url: 'https://images.pexels.com/photos/213399/pexels-photo-213399.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-    alt: 'Orange and White Koi Fish Near Yellow Koi Fish',
-  },
-  {
-    url: 'https://images.pexels.com/photos/219943/pexels-photo-219943.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-    alt: 'Group of Horses Running',
-  },
-]
+const randomIntegerFromInterval = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
-const gallery = document.querySelector('#gallery')
+const makeTransaction = (transaction, onSuccess, onError) => {
+  const delay = randomIntegerFromInterval(200, 500)
 
-gallery.style.display = 'flex'
-gallery.style.padding = '0px'
+  setTimeout(() => {
+    const canProcess = Math.random() > 0.3
 
-gallery.insertAdjacentHTML(
-  'beforeend',
-  images
-    .map(
-      image =>
-        `<li style="display:flex; width:0,33vw; height:0,33vh; margin: 10px;">
-          <img src='${image.url}' alt='${image.alt}' style='display: block; height: 100%; width: 100%; object-fit:cover'>
-        </li>`,
-    )
-    .join(''),
-)
+    if (canProcess) {
+      onSuccess(transaction.id, delay)
+    } else {
+      onError(transaction.id)
+    }
+  }, delay)
+}
+
+const logSuccess = (id, time) => {
+  console.log(`Transaction ${id} processed in ${time}ms`)
+}
+
+const logError = id => {
+  console.warn(`Error processing transaction ${id}. Please try again later.`)
+}
+
+/*
+ * Работает так
+ */
+makeTransaction({ id: 70, amount: 150 }, logSuccess, logError)
+makeTransaction({ id: 71, amount: 230 }, logSuccess, logError)
+makeTransaction({ id: 72, amount: 75 }, logSuccess, logError)
+makeTransaction({ id: 73, amount: 100 }, logSuccess, logError)
+/*
+ * Должно работать так
+ */
+makeTransaction({ id: 70, amount: 150 }).then(logSuccess).catch(logError)
+
+makeTransaction({ id: 71, amount: 230 }).then(logSuccess).catch(logError)
+
+makeTransaction({ id: 72, amount: 75 }).then(logSuccess).catch(logError)
+
+makeTransaction({ id: 73, amount: 100 }).then(logSuccess).catch(logError)

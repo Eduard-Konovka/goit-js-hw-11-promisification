@@ -1,13 +1,12 @@
-const categories = document.querySelector('#categories')
+const delay = ms => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(ms), ms)
+  })
+}
 
-console.log(`'В списке ${categories.children.length} категории.'`)
+const logger = time => console.log(`Resolved after ${time}ms`)
 
-// -----------------------------------------------------------------
-
-const categoriesItem = document.querySelectorAll('.item')
-
-categoriesItem.forEach(item =>
-  console.log(
-    `- Категория: ${item.firstElementChild.textContent}\n- Количество элементов: ${item.lastElementChild.children.length}`,
-  ),
-)
+// Вызовы функции для проверки
+delay(2000).then(logger) // Resolved after 2000ms
+delay(1000).then(logger) // Resolved after 1000ms
+delay(1500).then(logger) // Resolved after 1500ms

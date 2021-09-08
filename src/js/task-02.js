@@ -1,16 +1,26 @@
-const ingredients = ['Картошка', 'Грибы', 'Чеснок', 'Помидоры', 'Зелень', 'Приправы']
+const users = [
+  { name: 'Mango', active: true },
+  { name: 'Poly', active: false },
+  { name: 'Ajax', active: true },
+  { name: 'Lux', active: false },
+]
 
-const ingredientsList = document.querySelector('#ingredients')
+const toggleUserState = (allUsers, userName, callback) => {
+  const updatedUsers = allUsers.map(user => (user.name === userName ? { ...user, active: !user.active } : user))
 
-// Пишем функцию для создания разметки списка ингридиентов
-const makeIngredientsList = elements => {
-  return elements.map(element => {
-    const listItem = document.createElement('li')
-    listItem.textContent = element
-
-    return listItem
-  })
+  callback(updatedUsers)
 }
 
-const tegsArray = makeIngredientsList(ingredients)
-ingredientsList.append(...tegsArray)
+const logger = updatedUsers => console.table(updatedUsers)
+
+/*
+ * Сейчас работает так
+ */
+toggleUserState(users, 'Mango', logger)
+toggleUserState(users, 'Lux', logger)
+
+/*
+ * Должно работать так
+ */
+toggleUserState(users, 'Mango').then(logger)
+toggleUserState(users, 'Lux').then(logger)
